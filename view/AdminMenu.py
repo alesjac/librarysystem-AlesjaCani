@@ -14,6 +14,7 @@ class AdminMenu:
             print("5- Delete a book")
             print("6- List of payments")
             print("7- Top 3 books sold")
+            print("8- Log out")
 
             choice = int(input("Enter the number to continue: "))
 
@@ -22,23 +23,25 @@ class AdminMenu:
                 AdminMenu.startAdminMenu(self,user)
             elif choice ==2:
                 self.book.getBookByAuthor()
-                print("2")
+                AdminMenu.startAdminMenu(self,user)
             elif choice ==3:
                 self.book.createBook()
-                print("3")
+                AdminMenu.startAdminMenu(self,user)
             elif choice ==4:
                 self.book.updateBook()
-                print("4")
+                AdminMenu.startAdminMenu(self,user)
             elif choice ==5:
                 self.book.deleteBook()
-                print("5")
+                AdminMenu.startAdminMenu(self,user)
             elif choice ==6:
-                print("6")
+                AdminMenu.startAdminMenu(self,user)
             elif choice ==7:
-                print("7")
+                AdminMenu.startAdminMenu(self,user)
+            elif choice ==8:
+                print("You have been successfully logged out. See you next time!")
             else:
-                print("Please enter ONLY values from 1 -7. Try again!")
-        
+                print("Please enter ONLY values from 1 -8. Try again!")
+                         
         except(BaseException):
-            print("Please enter ONLY values from 1 -7. Try again!")
+            print("Please enter ONLY values from 1 -8. Try again!")
   

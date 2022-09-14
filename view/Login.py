@@ -43,8 +43,8 @@ class Login:
                 self.adminMenu.startAdminMenu(user)
 
             elif isCredentialsCorrect == True and user[3] == "Buyer":
-                print("loggim om BUYER ")
-                self.buyerMenu.startBuyerMenu()
+                print("logged in BUYER ")
+                self.buyerMenu.startBuyerMenu(user)
             else:
                 if ifUserExits == True:
                     print("\n xxx-> Wrong username or password.Please try again. <-xxx \n")
