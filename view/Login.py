@@ -5,9 +5,10 @@ class Login:
     adminMenu =  AdminMenu()
     buyerMenu = BuyerMenu()
 
-    def loginMethod(self):
+    def start(self):
         try: 
-            print("\n\n\n_________________________________________________\n")
+            print(" ~ Welcome everybody to Library Project by ALESJA CANI! :) ~ \n")
+            print("------------------------------------------------------------")
             print("LOGIN PAGE\n")
             print("Please enter your credentials to login\n\n")
 
@@ -48,14 +49,15 @@ class Login:
             else:
                 if ifUserExits == True:
                     print("\n xxx-> Wrong username or password.Please try again. <-xxx \n")
-                    Login.loginMethod()
+                    Login.start()
                 else:
                     print("\n xxx -> User does not exists. Please try again. <- xxx\n")
-                    Login.loginMethod()
+                    Login.start()
         except(BaseException):
-            Login.loginMethod(self)
+            Login.start(self)
 
-
+login=Login()
+login.start()
 
             
             

@@ -1,4 +1,8 @@
-buyer_fullname,book_id,quantity,total_price,date
-ilseacani,7,2,2400,14/09/2022 19:59:41
-ilseacani,7,2,2400,14/09/2022 20:00:19
-ilseacani,7,2,2400,14/09/2022 20:48:50
+buyer_fullname,book_title,book_author,book_price,quantity,total_price,date
+ilseacani,E pafajshmja,Leo Tolstoy, 1200,4,3600,14/09/2022 22:23:03
+ilseacani,Idioti,Viktor Hygo, 1200,3,3600,14/09/2022 22:23:03
+ilseacani,Katedralja,Viktor Hygo,1200,1,3600,14/09/2022 22:23:03
+aldodervishi,Katedralja,Viktor Hygo,1200,2,3600,14/09/2022 22:23:03
+aldodervishi,Katedralja,Viktor Hygo,1200,2,3600,14/09/2022 22:23:03
+aldodervishi,E pafajshmja,Leo Tolstoy, 1200,1,3600,14/09/2022 22:23:03
+aldodervishi,Zemra,Leo Tolstoy, 1200,4,3600,14/09/2022 22:23:03

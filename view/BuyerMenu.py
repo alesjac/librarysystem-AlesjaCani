@@ -18,11 +18,11 @@ class BuyerMenu:
                 self.book.display_all_books()
                 BuyerMenu.startBuyerMenu(self,user)
             elif choice ==2:
-                self.purchase.purchaseBook()
+                self.purchase.purchaseBook(user)
                 BuyerMenu.startBuyerMenu(self,user)
+                print('')
             elif choice ==3:
-                
-                print("3")
+                self.purchase.displayPurchaseOfUser(user)
             elif choice ==4:
                 print("You have been successfully logged out. See you next time!")
             else:
