@@ -4,24 +4,35 @@ class Book:
     book_records='books.csv'
     # adminMenu = AdminMenu()
     def display_all_books(self):
+        print("\nLIST OF BOOKS \n")
+        print("    ⬇          \n")
         with open(self.book_records,"r") as file:
             reader = csv.reader(file)
-            print("\nLIST OF BOOKS:")
-            print("----------------")
+            
             next(file)
             for row in reader:
                 if int(row[4])>0:
-                    print(f"Book Id: {row[0]} --- Book Title: {row[1]} --- Book Author: {row[2]} --- Book Price: {row[3]} --- Book Quantity: {row[4]} \n") 
+                    print(f"» Book Id: {row[0]} --- Book Title: {row[1]} --- Book Author: {row[2]} --- Book Price: {row[3]} --- Book Quantity: {row[4]} \n") 
+
+    def display_all_books_admin(self):
+        print("\nLIST OF BOOKS \n")
+        print("    ⬇          \n")
+        with open(self.book_records,"r") as file:
+            reader = csv.reader(file)
+            
+            next(file)
+            for row in reader:
+                print(f"» Book Id: {row[0]} --- Book Title: {row[1]} --- Book Author: {row[2]} --- Book Price: {row[3]} --- Book Quantity: {row[4]} \n") 
 
             
     def getBookByAuthor(self):
         try:
-            print("--------------------------------------")
-            print("Search book by author name")
+            print("\n\n--------------------------------------")
+            print("♦ Search book by author name ♦")
             print("--------------------------------------")
 
-            author = input("\nAuthor name: ")
-            print("-------------------")
+            author = input("\n⌲ Author name: ")
+            
             isAuthorCorrect = True
             book=[]
 
@@ -52,22 +63,22 @@ class Book:
 
                     # if book is not found with the author name
                     if(book==[]):
-                        print("Author not found in database! Please try again!")
+                        print("\nAuthor not found in database!☹ Please try again!")
                         Book.getBookByAuthor(self)
             
             # if user inputs incorrect values -> isAuthorCorrect == False:
             else:
-                print("Enter correct values. Try again!")
+                print("\nEnter correct values. Try again!☹")
                 Book.getBookByAuthor(self)
 
         except(BaseException):
-            print("xxx Error ! Please try again!")
+            print("\nxxx Error ! Please try again! ☹")
             Book.getBookByAuthor(self)
 
     def createBook(self):
         try:
-            print("--------------------------------------")
-            print("Create book section")
+            print("\n\n--------------------------------------")
+            print("♦ Create book section ♦")
             print("--------------------------------------")
 
 
@@ -88,7 +99,7 @@ class Book:
             
             # require from user to put values for fields name except ID, which is automatically added
             for i in range(1,len(rec_fields)):
-                value=input("Enter "+ rec_fields[i] + ": ")
+                value=input("⌲ Enter "+ rec_fields[i] + ": ")
 
                 if value == "" or value.isspace():
                     self.correctValue =False
@@ -105,6 +116,7 @@ class Book:
                 for rows in Book.all_books(self):
                     if rows[1] == books[1]:
                         bookExists = True
+                        
             
 
                 if bookExists == False:
@@ -114,17 +126,17 @@ class Book:
                         writer = csv.writer(file)
                         writer.writerows([books])
 
-                    print("Successfully created a book")  
+                    print("\n✔ Successfully created a book\n")  
 
                 if bookExists == True:
-                    print("Book exists! Try again.")
+                    print("\nBook exists! Try again. ☹\n")
                     Book.createBook(self)
             else:
-                print("Enter correct values. Try again!")
+                print("\nEnter correct values. Try again! ☹")
                 Book.createBook(self)
 
         except(BaseException):
-            print("Error occured. Try again")
+            print("\nError occured. Try again ☹")
             Book.createBook(self)
        
     
@@ -143,33 +155,33 @@ class Book:
 
     def updateBook(self):
         print("--------------------------------------")
-        print("Update book section")
+        print("♦ Update book section ♦")
         print("--------------------------------------")
         
         
         try:
-            Book.display_all_books(self)
+            Book.display_all_books_admin(self)
             print("----------------------------------\n")
             file = open(self.book_records,"r")
-            id = input("Enter id book to update: ")
+            id = input("⌲ Enter id book to update: ")
             found=False
             reader = csv.reader(file)
             uprecord=[]
             for row in reader:
                 #update the wanted book
                 if row[0]==id:
-                    print("Book found: ", row)
+                    print("\nBook found: ", row)
                     row[1]=input("Enter new title: ")
                     row[2]=input("Enter new author: ")
                     row[3]=input("Enter new price: ")
                     row[4]=input("Enter new quantity: ")
 
-                    print("Updated record: ",row )
+                    print("✔ Updated record: ",row )
                     found=True
                 uprecord.append(row)
 
             if found == False:
-                print("Sorry! Record not found. \n\n")
+                print("\nSorry! Record not found. ☹\n\n")
                 Book.updateBook(self)
                 file.close()
             else:
@@ -177,18 +189,23 @@ class Book:
                 file=open(self.book_records,"w",encoding="utf-8",newline='')
                 writer = csv.writer(file)
                 writer.writerows(uprecord)
-                print("You record is successfully updated.")
+                print("\n✔ You record is successfully updated.\n")
                 file.close()
     
         except(BaseException):
-            print("Error. Try again")
+            print("\n☹ Error. Try again☹\n")
             # Book.createBook(self)
 
 
     def deleteBook(self):
+        print("--------------------------------------")
+        print("♦ Delete book section ♦")
+        print("--------------------------------------\n")
+        Book.display_all_books_admin(self)
+        print("----------------------------------\n")
         file = open(self.book_records,"r")
         reader = csv.reader(file)
-        id=input("Enter the book id you want to delete: ")
+        id=input("⌲ Enter the book id you want to delete: ")
         found=0
         books=[]
 
@@ -200,13 +217,14 @@ class Book:
                 found = 1
         file.close()
         if found==0:
-            print("Data not found")
+            print("\nData not found!!! Try again! ☹\n")
+            Book.deleteBook(self)
         else:
             #update the file without the deleted book
             file=open(self.book_records,"w",newline='')
             writer=csv.writer(file)
             writer.writerows(books)
-            print("Book is deleted")
+            print("\n✔ Book is successfully deleted! \n")
             file.close()   
 
 
@@ -238,7 +256,7 @@ class Book:
             writer = csv.writer(file)
             writer.writerows(updated_list)
             file.close()
-            print("success - quantity changed")
+            # print("success - quantity changed")
     
         except(BaseException):
             print("Error. Try again")

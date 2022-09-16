@@ -7,7 +7,7 @@ class Login:
 
     def start(self):
         try: 
-            print(" ~ Welcome everybody to Library Project by ALESJA CANI! :) ~ \n")
+            print("\n~ Welcome everybody to Library Project by ALESJA CANI! :) ~ \n")
             print("------------------------------------------------------------")
             print("LOGIN PAGE\n")
             print("Please enter your credentials to login\n\n")
@@ -40,18 +40,18 @@ class Login:
                     
                     
             if isCredentialsCorrect == True and user[3] == "Admin":
-                print("Logged in ADMIN")
+                # print("Logged in ADMIN")
                 self.adminMenu.startAdminMenu(user)
 
             elif isCredentialsCorrect == True and user[3] == "Buyer":
-                print("logged in BUYER ")
+                # print("logged in BUYER ")
                 self.buyerMenu.startBuyerMenu(user)
             else:
                 if ifUserExits == True:
-                    print("\n xxx-> Wrong username or password.Please try again. <-xxx \n")
+                    print("\n xxx-> Wrong username or password.Please try again. ☹ <-xxx \n")
                     Login.start()
                 else:
-                    print("\n xxx -> User does not exists. Please try again. <- xxx\n")
+                    print("\n xxx -> User does not exists. Please try again. ☹ <- xxx\n")
                     Login.start()
         except(BaseException):
             Login.start(self)

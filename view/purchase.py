@@ -2,43 +2,32 @@ import csv
 from lib2to3.pytree import Base
 from Book import *
 from datetime import datetime
-from User import *
 from statistics import mode
 from operator import itemgetter
 
 class Purchase:
 
-    # user_records='users.csv'
+    user_records='users.csv'
     purchase_records='purchase.csv'
     book=Book()
-    user=User()
-
-    # def getUserbyUsername(self,username):
-    #     print("------------------------\n")
-    #     user=[]
-    #     with open(self.user_records,"r") as file:
-    #         reader = csv.reader(file)
-    #         for row in reader:    
-    #             if row[0] == username:
-    #                 user.append(row)
-    #     return user
 
     def purchaseBook(self,user):
         try:
             # user = Purchase.getUserbyUsername(self,"ilseacani")
             print("--------------------------------------")
-            print(F"MAKE A PURCHASE SECTION FOR {user[1]}")
+            print(F"♦ MAKE A PURCHASE SECTION FOR {user[1]} ♦")
             print("--------------------------------------")
 
-            print("There is a list of books you may look before deciding what to buy\n")
+            print("« There is a list of books you may look before deciding what to buy »\n")
+            print("⬇")
             self.book.display_all_books()
             bookExists = False
-            print(f"\n------Enter the Purchase details below to place an order {user[0][1]}------")
+            print(f"\n♦ Enter the Purchase details below to place an order {user[0][1]} ")
             purchase=[]
             bookToBuy=[]
 
             #first value
-            buyer_id=user[0][0]
+            buyer_id=user[0]
             purchase.append(buyer_id)
 
             #second and third values 
@@ -59,21 +48,30 @@ class Purchase:
 
             if self.correctValue == True:
                 print("")
+
+                #value_of_req_details[0] => book id
                 book = self.book.getBookById(value_of_req_details[0])
                 if book == []:
-                    print("This book does not exists. Try a different id.")
+                    print("☹ This book does not exists. Try a different id.")
                     Purchase.purchaseBook(self)
                     # raise BookDoesNotExists("This book does not exists. Try a different id.")
                 else:
+                    #add book id, book title , book author to purchase list
                     purchase.append(value_of_req_details[0])
+                    purchase.append(book[0][1])
+                    purchase.append(book[0][2])
                     bookToBuy=book
 
                     if int(value_of_req_details[1])>0 and int(value_of_req_details[1])<=int(bookToBuy[0][4]):
+                        #add quantity user want to buy to list
                         purchase.append(int(value_of_req_details[1]))
                         quantityToBuy = int(value_of_req_details[1])
+
                         # other values
                         #data calculated within code
                         # book = self.book.getBookById(value[0])
+
+                        #change quantity of book in books.csv
                         self.book.changeQuantityOfBook(book,quantityToBuy)
                         totalprice = quantityToBuy * int(book[0][3])
                         purchase.append(totalprice)
@@ -86,17 +84,18 @@ class Purchase:
                             writer = csv.writer(file)
                             writer.writerows([purchase])
 
-                        print(f"Successfully made a purchase '{bookToBuy[0][1]} - {bookToBuy[0][2]}'!\n Enter nr 3 to view all your purchases.")
+                        print(f"✔ Successfully made a purchase '{bookToBuy[0][1]} - {bookToBuy[0][2]}'!\n☆ Enter nr 3 to view all your purchases.\n\n")
                     else:
-                        print(f"\nWe have only {int(bookToBuy[0][4])} books left. Please try again!")
-                        Purchase.purchaseBook(self)
+                        print(f"\nWe have only {int(bookToBuy[0][4])} books left. Please try again!☹ \n\n")
+                        Purchase.purchaseBook(self,user)
             else:
-                print("Incorrect input data. Please try again.")
-                Purchase.purchaseBook(self)
+                print("Incorrect input data. Please try again.\n\n")
+                Purchase.purchaseBook(self,user)
         
     
         except(BaseException):
-            print("Error!")
+            print("Error!\n")
+            Purchase.purchaseBook(self,user)
 
 
     # def getPurchaseByUserId(self,username):
@@ -111,24 +110,27 @@ class Purchase:
 
 
     def displayPurchaseOfUser(self,userLogin):
-        print("\n--------------------------------------")
-        print(F"LIST OF PURCHASES FOR {userLogin[1]}")
-        print("--------------------------------------")
-        user = self.user.getUserbyUsername(self,userLogin[0])
-        # purchaseOfUser = Purchase.getPurchaseByUserId(self,"ilseacani")
-        # print(purchaseOfUser)
-        hasPurchased=True
-        with open(self.purchase_records,"r") as file:
-            reader=csv.reader(file)
-            for row in reader:
-                if row[0]==user[0][0]:
-                    print(f"Book Title: {row[1]} --- Book Author {row[2]} --- Book Price {row[3]} --- Quantity purchased: {row[4]} --- Total price: {row[5]} --- Date: {row[6]} \n") 
-                    hasPurchased=True
-                else:
-                    hasPurchased=False
-                    
-        if(hasPurchased==False):
-            print("No books purchased.")
+        try:
+            print("\n--------------------------------------")
+            print(F"♦ LIST OF PURCHASES FOR {userLogin[1]} ♦")
+            print("--------------------------------------")
+            user = Purchase.getUserbyUsername(self,userLogin[0])
+            # purchaseOfUser = Purchase.getPurchaseByUserId(self,"ilseacani")
+            # print(purchaseOfUser)
+            hasPurchased=True
+            with open(self.purchase_records,"r") as file:
+                reader=csv.reader(file)
+                for row in reader:
+                    if row[0]==user[0][0]:
+                        print(f"☆ Book Title: {row[1]} --- Book Author {row[2]} --- Book Price {row[3]} --- Quantity purchased: {row[4]} --- Total price: {row[5]} --- Date: {row[6]} \n") 
+                        hasPurchased=True
+                    else:
+                        hasPurchased=False
+                        
+            if(hasPurchased==False):
+                print("☹ No books purchased.")
+        except(BaseException):
+            print("☹ Error!\n")
 
 #methods for top 3 sold books START
     def getBookAndQuantity(self):
@@ -199,7 +201,7 @@ class Purchase:
 
         try:
             print("\n--------------------------------------")
-            print("TOP 3 SOLD BOOKS")
+            print("♦ TOP 3 SOLD BOOKS ♦")
             print("----------------------------------------\n")
             bookAndQuantity = Purchase.getBookAndQuantity(self)
             if len(bookAndQuantity)>=3:
@@ -218,34 +220,43 @@ class Purchase:
                 all3books.append(third_book)
             
                 final = sorted(all3books,key=itemgetter(1),reverse=True)
-                print(f"First book: {final[0][0]}. Total amount sold {final[0][1]} ")
-                print(f"Second book: {final[1][0]}. Total amount sold {final[1][1]} ")
-                print(f"Third book: {final[2][0]}. Total amount sold {final[2][1]} ")
+                print(f"★ First book: {final[0][0]}. Total amount sold {final[0][1]} ")
+                print(f"★ Second book: {final[1][0]}. Total amount sold {final[1][1]} ")
+                print(f"★ Third book: {final[2][0]}. Total amount sold {final[2][1]} \n\n\n")
             else:
                 print("\nYou have less than 3 books sold until now.\nCheck List of purchases nr 6.")
         except(BaseException):
-            print("\nXXX Something went wrong. Try again! XXX")
+            print("\n× Something went wrong. Try again! ×")
 
     #methods for top 3 sold books END
 
 
+    def getUserbyUsername(self,username):
+        
+        user=[]
+        with open(self.user_records,"r") as file:
+            reader = csv.reader(file)
+            for row in reader:    
+                if row[0] == username:
+                    user.append(row)
+        return user
+
     def allPurchases(self):
         try:
             print("\n--------------------------------------")
-            print("LIST OF ALL PURCHASES")
+            print("♦ LIST OF ALL PURCHASES ♦")
             print("----------------------------------------\n")
-            # anyPurchase=True
+            anyPurchase=False
             with open(self.purchase_records,"r") as file:
                 reader=csv.reader(file)
                 next(file)
                 for row in reader:
-                    
-                    user = self.user.getUserbyUsername(self,row[0])
+                    user = Purchase.getUserbyUsername(self,row[0])
                     print(f"Book purchased by {user[0][1]}")
-                    print(f"Book Title: {row[1]} --- Book Author {row[2]} --- Book Price {row[3]} --- Quantity purchased: {row[4]} --- Total price: {row[5]} --- Date: {row[6]} \n") 
+                        # if row[0]==user[0][0]:
+                    print(f"⌲ Book Title: {row[1]} --- Book Author {row[2]} --- Book Price {row[3]} --- Quantity purchased: {row[4]} --- Total price: {row[5]} --- Date: {row[6]} \n") 
                     anyPurchase=True
-                    
-            if anyPurchase == False:
-                print("There is no purchase yet.\n\n")
-        except(BaseException):
-            print("There is no purchase yet.\n\n")
+            if anyPurchase==False:
+                print("No purchases yet.☹\n")
+        except:
+            print("error☹")   
